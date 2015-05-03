@@ -53,4 +53,19 @@ class DemoController extends Controller
 
         return array('form' => $form->createView());
     }
+	
+	/**
+     * @Route("/first", name="_first")
+     * @Template()
+     */
+	public function firstAction()
+    { 
+        /*
+         * The action's view can be rendered using render() method
+         * or @Template annotation as demonstrated in DemoController.
+         *
+         */
+
+        return $this->render('AcmeDemoBundle:Demo:first.html.twig');
+    }
 }
