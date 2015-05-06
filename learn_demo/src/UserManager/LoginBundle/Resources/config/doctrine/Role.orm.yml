@@ -1,0 +1,36 @@
+UserManager\LoginBundle\Entity\Role:
+    type: entity
+    table: users_role
+    repositoryClass: UserManager\LoginBundle\Entity\RoleRepository
+    indexes:
+        name_index:
+            columns: [ name ]
+        role_index:
+            columns: [ role ]
+    fields:
+        id:
+            type: bigint
+            id: true
+            generator: { strategy: AUTO }
+        name:
+            type: string
+            length: 60
+            nullable: true
+        role:
+            type: string
+            length: 60
+            unique: true
+            nullable: false
+        created_at:
+            type: datetime
+        updated_at:
+            type: datetime
+            nullable: true            
+    oneToMany:
+        Login:
+            targetEntity: UserManager\LoginBundle\Entity\Login
+            mappedBy: Role
+            cascade: [persist]
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]            

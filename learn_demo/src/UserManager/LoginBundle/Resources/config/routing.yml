@@ -1,0 +1,12 @@
+user_manager_login:
+    path:     /login
+    defaults: { _controller: UserManagerLoginBundle:Login:login }
+user_manager_security_check:
+    pattern:  /admin/login_check
+    defaults: { _controller: UserManagerLoginBundle:Login:securityCheck }	
+user_manager_logout:
+    pattern:  /admin/logout
+    defaults: { _controller: UserManagerLoginBundle:Login:logout }
+users_welcome:
+    pattern:  /admin/welcome
+    defaults: { _controller: UserManagerLoginBundle:Login:welcome }	

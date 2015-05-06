@@ -1,0 +1,7 @@
+user_manager_user_profile_userprofile:
+    resource: "@UserManagerUserProfileBundle/Resources/config/routing/userprofile.yml"
+    prefix:   /userprofile
+
+user_manager_user_profile_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: UserManagerUserProfileBundle:Default:index }

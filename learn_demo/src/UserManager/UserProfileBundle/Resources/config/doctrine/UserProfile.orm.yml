@@ -1,0 +1,83 @@
+UserManager\UserProfileBundle\Entity\UserProfile:
+    type: entity
+    table: user_profile
+    repositoryClass: UserManager\UserProfileBundle\Entity\UserProfileRepository
+    indexes:
+        first_name_index:
+            columns: [ first_name ]
+        last_name_index:
+            columns: [ last_name ]
+        city_index:
+            columns: [ city ]
+        state_index:
+            columns: [ state ]
+        zip_code_index:
+            columns: [ zip_code ]    
+        phone_index:
+            columns: [ phone ]
+        mobile_index:
+            columns: [ mobile ]    
+        fax_index:
+            columns: [ fax ]    
+    fields:
+        id:
+            type: bigint
+            id: true
+            generator: { strategy: AUTO }    
+        first_name:
+            type: string
+            length: 30
+            nullable: false
+        last_name:
+            type: string
+            length: 30
+            nullable: false
+        address:
+            type: text
+            nullable: false
+        city:
+            type: string
+            length: 35
+            nullable: true
+        state:
+            type: string
+            length: 35
+            nullable: true
+        contry:
+            type: string
+            length: 35
+            nullable: true
+        zip_code:
+            type: string
+            length: 5
+            nullable: true
+        phone:
+            type: string
+            length: 13
+            nullable: true
+        mobile:
+            type: string
+            length: 13
+            nullable: false
+        fax:
+            type: string
+            length: 16
+            nullable: true
+        created_at:
+            type: datetime
+        updated_at:
+            type: datetime
+            nullable: true            
+    oneToOne:
+        Login:
+          targetEntity: UserManager\LoginBundle\Entity\Login
+          inversedBy: UserProfile
+          joinColumn:
+            name: id_login
+            referencedColumnName: id
+            onDelete: CASCADE
+            onUpdate: CASCADE
+          cascade: [ remove ]
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]          

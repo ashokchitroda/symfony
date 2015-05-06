@@ -1,0 +1,3 @@
+user_manager_forgot_password_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: UserManagerForgotPasswordBundle:Default:index }

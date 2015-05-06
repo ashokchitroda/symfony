@@ -1,0 +1,4 @@
+services:
+#    user_manager_login.example:
+#        class: UserManager\LoginBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

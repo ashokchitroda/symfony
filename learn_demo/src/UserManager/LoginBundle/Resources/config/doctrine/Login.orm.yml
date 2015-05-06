@@ -1,0 +1,83 @@
+UserManager\LoginBundle\Entity\Login:
+    type: entity
+    table: users_login
+    repositoryClass: UserManager\LoginBundle\Entity\LoginRepository
+    indexes:
+        username_index:
+            columns: [ username ]
+        email_index:
+            columns: [ email ]
+        salt_index:
+            columns: [ salt ]
+        password_index:
+            columns: [ password ]
+        id_role_index:
+            columns: [ id_role ]
+        id_company_index:
+            columns: [ id_company ]            
+    fields:
+        id:
+            type: bigint
+            id: true
+            generator: { strategy: AUTO }
+        username:
+            type: string
+            length: 60
+            nullable: false
+        email:
+            type: string
+            length: 60
+            nullable: false
+        salt:
+            type: string
+            length: 32
+            nullable: true
+        password:
+            type: string
+            langth: 64
+            nullable: false
+        is_active:
+            type: boolean
+            options:
+                default: 0
+        is_account_expired:
+            type: boolean
+            options:
+                default: 0
+        is_account_locked:
+            type: boolean
+            options:
+                default: 0
+        is_credentials_expired:
+            type: boolean
+            options:
+                default: 0
+        id_role:
+            type: bigint
+            nullable: false
+        id_company:
+            type: bigint
+            nullable: true
+        created_at:
+            type: datetime
+        updated_at:
+            type: datetime
+            nullable: true
+    manyToOne:
+        Role:
+          targetEntity: UserManager\LoginBundle\Entity\Role
+          inversedBy: UserManager\LoginBundle\Entity\Login
+          joinColumn:
+            name: id_role
+            referencedColumnName: id
+    oneToOne:
+        ForgotPassword:
+          targetEntity: UserManager\ForgotPasswordBundle\Entity\ForgotPassword
+          mappedBy: Login
+        UserProfile:
+          targetEntity: UserManager\UserProfileBundle\Entity\UserProfile
+          mappedBy: Login
+          cascade: [persist]
+    lifecycleCallbacks:
+        prePersist: [ setCreatedAtValue ]
+        preUpdate: [ setUpdatedAtValue ]
