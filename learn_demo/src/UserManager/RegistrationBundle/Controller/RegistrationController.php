@@ -8,6 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\Session\Session;
 Use UserManager\LoginBundle\Entity\MailGenerator;
+use Proxies\__CG__\UserManager\LoginBundle\Entity\Login;
 
 class RegistrationController extends Controller
 {
@@ -26,7 +27,24 @@ class RegistrationController extends Controller
         	
         	return $this->redirectToRoute('user_manager_login');
         }else{
-        
+        	$role = $this->getDoctrine()->getRepository('UserManagerLoginBundle:Role')->find(1);
+        	
+        	$login = new Login();
+        	$login->setUsername("");
+        	$login->setEmail($email);
+        	$login->setPassword($password);
+        	$login->setIsActive(0);
+        	$login->setIsAccountExpired(0);
+        	$login->setIsAccountLocked(0);
+        	$login->setIsCredentialsExpired(0);
+        	$login->setRole($role);
+        	$login->setUpdatedAt(new \DateTime());
+        	$login->setCreatedAt(new \DateTime());
+        	
+        	$em = $this->getDoctrine()->getEntityManager();
+        	$em->persist($login);
+        	$em->flush();
+        	
         	$sender = $this->container->getParameter('sender_email');
         	$subject = "Activate your account of metronic";
         	$emailBody = $this->render('UserManagerRegistrationBundle:Registration:registrationActiveMailContent.html.twig');
