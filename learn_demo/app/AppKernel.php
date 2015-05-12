@@ -20,6 +20,7 @@ class AppKernel extends Kernel
             new UserManager\LoginBundle\UserManagerLoginBundle(),
             new UserManager\ForgotPasswordBundle\UserManagerForgotPasswordBundle(),
             new UserManager\UserProfileBundle\UserManagerUserProfileBundle(),
+            new UserManager\RegistrationBundle\UserManagerRegistrationBundle(),
         );
 
         if (in_array($this->getEnvironment(), array('dev', 'test'))) {

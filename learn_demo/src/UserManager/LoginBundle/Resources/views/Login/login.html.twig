@@ -22,24 +22,28 @@
 {% block page_container %}
 	<div class="content">
 		<!-- BEGIN LOGIN FORM -->
-		<form class="form-horizontal" action="{{ path("user_manager_security_check") }}" method="post" id="login">
+		<form method="post" action="{{ path('user_manager_security_check') }}" class="login-form" novalidate="novalidate" style="display: {{ ((form_name is defined and form_name == 'login')? 'block' : 'none') }};">
 			<h3 class="form-title">Sign In</h3>
-			{% if error %}
-				<div class="error">{{ error.message }}</div>
+			{% if error.message is defined %}
+			<div class="alert alert-danger" id="authentication-error">
+				<button class="close" data-close="alert"></button>
+				<span>{{ error.message }}</span>
+			</div>
 			{% endif %}
 			<div class="alert alert-danger display-hide">
 				<button class="close" data-close="alert"></button>
 				<span>
 				Enter any username and password. </span>
 			</div>
+			
 			<div class="form-group">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 				<label class="control-label visible-ie8 visible-ie9">Username</label>
-				<input class="form-control form-control-solid placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="_username" id="username" value="{{ last_username }}" />
+				<input type="text" name="username" id="username" placeholder="Username" autocomplete="off" class="form-control form-control-solid placeholder-no-fix" aria-required="true" aria-describedby="username-error username-error username-error username-error" value="{% if last_username is defined %}{{ last_username }}{% endif %}">
 			</div>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Password</label>
-				<input class="form-control form-control-solid placeholder-no-fix" type="password" autocomplete="off" placeholder="Password" name="_password" id="password" value=""/>
+				<input type="password" name="password" id="password" placeholder="Password" autocomplete="off" class="form-control form-control-solid placeholder-no-fix" aria-required="true" aria-describedby="password-error password-error password-error password-error password-error password-error" aria-invalid="true" value="">
 				<input type="hidden" name="_target_path" value="{{ url('users_welcome') }}" />
 			</div>
 			<div class="form-actions">
@@ -57,10 +61,14 @@
 		</form>
 		<!-- END LOGIN FORM -->
 		<!-- BEGIN FORGOT PASSWORD FORM -->
-		<form class="forget-form" action="index.html" method="post">
+		<form class="forget-form" action="{{ path('user_manager_forgot_password') }}" method="post" style="display: {{ ((form_name is defined and form_name == 'forget')? 'block' : 'none') }};">
 			<h3>Forget Password ?</h3>
 			<p>
+			{% for flashMessage in app.session.flashbag.get('forget_error') %}
+			        {{ flashMessage }}
+			{% else %}
 				 Enter your e-mail address below to reset your password.
+			{% endfor %}
 			</p>
 			<div class="form-group">
 				<input class="form-control placeholder-no-fix" type="text" autocomplete="off" placeholder="Email" name="email"/>
@@ -72,15 +80,18 @@
 		</form>
 		<!-- END FORGOT PASSWORD FORM -->
 		<!-- BEGIN REGISTRATION FORM -->
-		<form class="register-form" action="index.html" method="post">
+		<form class="register-form" action="{{ path('user_manager_registration') }}" method="post" style="display: {{ ((form_name is defined and form_name == 'register')? 'block' : 'none') }};">
 			<h3>Sign Up</h3>            
 			<p class="hint">
 				 Enter your account details below:
 			</p>
-			<div class="form-group">
+			<div class="form-group has-error">
 				<!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
 				<label class="control-label visible-ie8 visible-ie9">Email</label>
 				<input class="form-control placeholder-no-fix" type="text" placeholder="Email" name="email"/>
+				{% for flashMessage in app.session.flashbag.get('register_error') %}
+			        <span id="email-error" class="help-block">{{ flashMessage }}</span>
+				{% endfor %}
 			</div>
 			<div class="form-group">
 				<label class="control-label visible-ie8 visible-ie9">Password</label>
@@ -108,7 +119,7 @@
 		<!-- END REGISTRATION FORM -->
 	</div>
 	<div class="copyright">
-		 2015 © IZNETWORK - Beta version.
+		 2015 &copy; IZNETWORK - Beta version.
 	</div>
 {% endblock %}
 
@@ -163,6 +174,11 @@
 			Layout.init(); // init current layout
 			Login.init();
 			Demo.init();
+			jQuery('.login-form button.btn-success').on('click', function(){
+				if (jQuery('#username').val() == '' || jQuery('#password').val() == ''){
+					jQuery("#authentication-error").replaceWith('');
+				}
+			});
 		});
 	</script>
 	<!-- END JAVASCRIPTS -->

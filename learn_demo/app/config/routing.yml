@@ -1,3 +1,19 @@
+user_manager_registration:
+    resource: "@UserManagerRegistrationBundle/Resources/config/routing.yml"
+    prefix:   /
+
+user_manager_user_profile:
+    resource: "@UserManagerUserProfileBundle/Resources/config/routing.yml"
+    prefix:   /
+
+user_manager_forgot_password:
+    resource: "@UserManagerForgotPasswordBundle/Resources/config/routing.yml"
+    prefix:   /
+
+user_manager_login:
+    resource: "@UserManagerLoginBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

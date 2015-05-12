@@ -12,3 +12,5 @@ parameters:
     mailer_password: null
     locale: en
     secret: 2391cc9653f51082883ecf655b5e7eef7f84c1aa
+    
+    sender_email : "chitrodaal@gmail.com"

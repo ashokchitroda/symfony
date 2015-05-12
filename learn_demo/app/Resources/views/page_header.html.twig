@@ -375,7 +375,8 @@
 					<li class="dropdown dropdown-user dropdown-dark">
 						<a data-close-others="true" data-hover="dropdown" data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
 						<span class="username username-hide-on-mobile">
-						Nick </span>
+							{% if app.user.username is defined %}{{ app.user.username|capitalize }}{% endif %}
+						</span>
 						<!-- DOC: Do not remove below empty space(&nbsp;) as its purposely used -->
 						<img src="{{ asset('assets/admin/layout4/img/avatar9.jpg') }}" class="img-circle" alt="">
 						</a>

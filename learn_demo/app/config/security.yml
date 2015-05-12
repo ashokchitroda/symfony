@@ -37,6 +37,10 @@ security:
                 check_path: user_manager_security_check
                 login_path: user_manager_login
                 #default_target_path: users_welcome
+                
+                # field names for the username and password fields
+                username_parameter: username
+                password_parameter: password
             logout:
                 path:   user_manager_logout
                 target: user_manager_login
@@ -48,5 +52,5 @@ security:
     # of your application based on roles, ip, host or methods
     # http://symfony.com/doc/current/cookbook/security/access_control.html
     access_control:
-        - { path: ^/admin/helloadmin/, roles: ROLE_SUPER }
+        - { path: ^/admin, roles: ROLE_SUPER }
         #- { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY, requires_channel: https }

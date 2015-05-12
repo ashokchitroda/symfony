@@ -1,3 +1,7 @@
-user_manager_forgot_password_homepage:
-    path:     /hello/{name}
-    defaults: { _controller: UserManagerForgotPasswordBundle:Default:index }
+user_manager_forgot_password:
+    pattern:  /forgot_password
+    defaults: { _controller: UserManagerForgotPasswordBundle:ForgotPassword:forgotPassword }
+    
+user_manager_reset_password:
+    pattern:  /reset_password/{key}
+    defaults: { _controller: UserManagerForgotPasswordBundle:ForgotPassword:resetPassword }
