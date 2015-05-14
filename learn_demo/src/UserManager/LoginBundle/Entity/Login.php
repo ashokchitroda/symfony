@@ -61,11 +61,6 @@ class Login implements AdvancedUserInterface, \Serializable
     private $id_role;
 
     /**
-     * @var integer
-     */
-    private $id_company;
-
-    /**
      * @var \DateTime
      */
     private $created_at;
@@ -309,29 +304,6 @@ class Login implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Set id_company
-     *
-     * @param integer $idCompany
-     * @return Login
-     */
-    public function setIdCompany($idCompany)
-    {
-        $this->id_company = $idCompany;
-
-        return $this;
-    }
-
-    /**
-     * Get id_company
-     *
-     * @return integer 
-     */
-    public function getIdCompany()
-    {
-        return $this->id_company;
-    }
-
-    /**
      * Set created_at
      *
      * @param \DateTime $createdAt
@@ -524,5 +496,33 @@ class Login implements AdvancedUserInterface, \Serializable
     public function __toString()
     {
         return (string) $this->id_role;
+    }
+    /**
+     * @var string
+     */
+    private $activte_key;
+
+
+    /**
+     * Set activte_key
+     *
+     * @param string $activteKey
+     * @return Login
+     */
+    public function setActivteKey($activteKey)
+    {
+        $this->activte_key = $activteKey;
+
+        return $this;
+    }
+
+    /**
+     * Get activte_key
+     *
+     * @return string 
+     */
+    public function getActivteKey()
+    {
+        return $this->activte_key;
     }
 }

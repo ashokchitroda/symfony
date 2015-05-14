@@ -20,16 +20,26 @@ class ForgotPasswordController extends Controller
     	
         $email = $request->get('email'); 
 
-        $login = $this->getDoctrine()->getRepository('UserManagerLoginBundle:Login')->findOneByEmail($email);
+        $login = $this->getDoctrine()
+        	->getRepository('UserManagerLoginBundle:Login')
+        	->findOneByEmail($email);
+        
         if (!$login) {
         	$session->getFlashBag()->add('forget_error', 'Email address is not registered');
         	$session->getFlashBag()->add('form_name', 'forget');
         	
         	return $this->redirectToRoute('user_manager_login');
         }else{
-        	
             $fpKey = \sha1(\md5($email.date('Y-m-d h:i:s')));
-            $forgotpassword = new ForgotPassword();
+            
+            $forgotpassword = $this->getDoctrine()
+            	->getRepository('UserManagerForgotPasswordBundle:ForgotPassword')
+            	->findOneBy(array('id_login' => $login->getId()));
+            
+            if(!$forgotpassword){
+            	$forgotpassword = new ForgotPassword();
+            }
+            
             $forgotpassword->setFpKey($fpKey);
             $forgotpassword->setLogin($login);
             $forgotpassword->setUpdatedAt(new \DateTime());
@@ -41,44 +51,49 @@ class ForgotPasswordController extends Controller
 
             $sender = $this->container->getParameter('sender_email');
             $subject = "Reset your passowrd of metronic";
-            $emailBody = "
-				Please click on below link to reset your password.
-				
-				http://".$this->getRequest()->getHost().$this->generateUrl('user_manager_reset_password', array('key' => $fpKey))."
-				
-				Thanks
-				
-				From,
-				Development Team";
+            $emailBody = $this->renderView('UserManagerForgotPasswordBundle:forgotPassword:forgotPasswordMailContent.html.twig',
+            	array('fpkey' => $fpKey)
+            );
 
             // Send mail
             $mail = new MailGenerator($this->get('mailer'));
-            //$mail->sendEmail($sender, $toEmail, $emailBody,$subject);
+            $mail->sendEmail($sender, $email, $emailBody,$subject);
             unset($mail);
 
-            return $this->render('UserManagerForgotPasswordBundle:ForgotPassword:forgotPassword.html.twig');
+            return $this->redirectToRoute('user_manager_forgot_password_success');
         }
+    }
+    
+    public function forgotPasswordSuccessAction(Request $request)
+    {
+    	return $this->render('UserManagerForgotPasswordBundle:forgotPassword:forgotPassword.html.twig');
     }
     
     public function resetPasswordAction(Request $request)
     {
-	    $forgotpassword = $this->getDoctrine()->getRepository('UserManagerForgotPasswordBundle:ForgotPassword')->findOneBy(array('fp_key' => $request->get('key')));
-	    if($forgotpassword){
+	    $forgotpassword = $this->getDoctrine()
+	    	->getRepository('UserManagerForgotPasswordBundle:ForgotPassword')
+	    	->findOneBy(array('fp_key' => $request->get('key')));
+	    
+	    if ($forgotpassword) {
 	    	$form = $this->createForm(new ResetPasswordType(), $forgotpassword->getLogin());
 	    	$form->handleRequest($request);
-	    	if ($form->isValid()) {
+	    	if ($form->isValid()) { 
 	    		$em = $this->getDoctrine()->getManager();
-	    		$forgotpassword->setFpKey('');
-	    		$em->persist($forgotpassword);
+	    		$em->remove($forgotpassword);
 	    		$em->flush();
-// 	    		$forgotpassword1 = $this->getDoctrine()->getRepository('UserManagerForgotPasswordBundle:ForgotPassword')->find($forgotpassword->getId());
-// 	    		$em->remove($forgotpassword1);
-// 	    		$em->flush();
-	    		return $this->render('UserManagerForgotPasswordBundle:ResetPassword:resetPasswordSuccess.html.twig');
+	    		return $this->redirectToRoute('user_manager_reset_password_success');
 	    	}
-	    	return $this->render('UserManagerForgotPasswordBundle:ResetPassword:resetPassword.html.twig', array('form' => $form->createView()));
+	    	return $this->render('UserManagerForgotPasswordBundle:resetPassword:resetPassword.html.twig',
+	    		array('form' => $form->createView())
+	    	);
 	    }else{
-	    	return $this->render('UserManagerForgotPasswordBundle:ResetPassword:keyNotMatch.html.twig');
+	    	return $this->render('UserManagerForgotPasswordBundle:resetPassword:keyNotMatch.html.twig');
 	    }
+    }
+    
+    public function resetPasswordSuccessAction(Request $request)
+    {
+    	return $this->render('UserManagerForgotPasswordBundle:resetPassword:resetPasswordSuccess.html.twig');
     }
 }

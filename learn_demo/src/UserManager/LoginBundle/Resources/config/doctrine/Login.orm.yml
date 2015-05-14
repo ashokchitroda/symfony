@@ -13,8 +13,8 @@ UserManager\LoginBundle\Entity\Login:
             columns: [ password ]
         id_role_index:
             columns: [ id_role ]
-        id_company_index:
-            columns: [ id_company ]            
+        activte_key_index:
+            columns: [ activte_key ]            
     fields:
         id:
             type: bigint
@@ -55,8 +55,9 @@ UserManager\LoginBundle\Entity\Login:
         id_role:
             type: bigint
             nullable: false
-        id_company:
-            type: bigint
+        activte_key:
+            type: string
+            length: 50
             nullable: true
         created_at:
             type: datetime
@@ -70,10 +71,11 @@ UserManager\LoginBundle\Entity\Login:
           joinColumn:
             name: id_role
             referencedColumnName: id
-    oneToOne:
+    oneToMany:
         ForgotPassword:
           targetEntity: UserManager\ForgotPasswordBundle\Entity\ForgotPassword
           mappedBy: Login
+    oneToOne:
         UserProfile:
           targetEntity: UserManager\UserProfileBundle\Entity\UserProfile
           mappedBy: Login

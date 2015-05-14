@@ -2,6 +2,14 @@ user_manager_forgot_password:
     pattern:  /forgot_password
     defaults: { _controller: UserManagerForgotPasswordBundle:ForgotPassword:forgotPassword }
     
+user_manager_forgot_password_success:
+    pattern:  /forgot_password_success
+    defaults: { _controller: UserManagerForgotPasswordBundle:ForgotPassword:forgotPasswordSuccess }    
+    
 user_manager_reset_password:
     pattern:  /reset_password/{key}
     defaults: { _controller: UserManagerForgotPasswordBundle:ForgotPassword:resetPassword }
+    
+user_manager_reset_password_success:
+    pattern:  /reset_password_success
+    defaults: { _controller: UserManagerForgotPasswordBundle:ForgotPassword:resetPasswordSuccess }    

@@ -1,3 +1,7 @@
 user_manager_registration:
     path:     /registration
     defaults: { _controller: UserManagerRegistrationBundle:Registration:registration }
+
+user_manager_registration_activate:
+    path:     /registration_activate/{key}
+    defaults: { _controller: UserManagerRegistrationBundle:Registration:registrationActivate }    

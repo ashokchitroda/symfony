@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: 127.0.0.1
--- Generation Time: May 06, 2015 at 10:49 AM
+-- Generation Time: May 14, 2015 at 11:57 AM
 -- Server version: 5.6.21
 -- PHP Version: 5.5.19
 
@@ -51,7 +51,7 @@ CREATE TABLE IF NOT EXISTS `users_login` (
   `is_account_expired` tinyint(1) NOT NULL DEFAULT '0',
   `is_account_locked` tinyint(1) NOT NULL DEFAULT '0',
   `is_credentials_expired` tinyint(1) NOT NULL DEFAULT '0',
-  `id_company` bigint(20) DEFAULT NULL,
+  `activte_key` varchar(50) COLLATE utf8_unicode_ci DEFAULT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
@@ -60,8 +60,8 @@ CREATE TABLE IF NOT EXISTS `users_login` (
 -- Dumping data for table `users_login`
 --
 
-INSERT INTO `users_login` (`id`, `id_role`, `username`, `email`, `salt`, `password`, `is_active`, `is_account_expired`, `is_account_locked`, `is_credentials_expired`, `id_company`, `created_at`, `updated_at`) VALUES
-(1, 1, 'ashok', 'chitrodaal@gmail.com', NULL, 'ashok', 1, 0, 0, 0, NULL, '2015-05-05 00:00:00', '2015-05-05 00:00:00');
+INSERT INTO `users_login` (`id`, `id_role`, `username`, `email`, `salt`, `password`, `is_active`, `is_account_expired`, `is_account_locked`, `is_credentials_expired`, `activte_key`, `created_at`, `updated_at`) VALUES
+(1, 2, 'ashok', 'chitrodaal@gmail.com', NULL, 'ashok', 1, 0, 0, 0, NULL, '2015-05-14 11:49:38', '2015-05-14 11:50:36');
 
 -- --------------------------------------------------------
 
@@ -75,14 +75,15 @@ CREATE TABLE IF NOT EXISTS `users_role` (
   `role` varchar(60) COLLATE utf8_unicode_ci NOT NULL,
   `created_at` datetime NOT NULL,
   `updated_at` datetime DEFAULT NULL
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 --
 -- Dumping data for table `users_role`
 --
 
 INSERT INTO `users_role` (`id`, `name`, `role`, `created_at`, `updated_at`) VALUES
-(1, 'super', 'SUPER', '2015-05-05 00:00:00', '2015-05-05 00:00:00');
+(1, 'super', 'SUPER', '2015-05-14 00:00:00', '2015-05-14 00:00:00'),
+(2, 'admin', 'ADMIN', '2015-05-14 00:00:00', '2015-05-14 00:00:00');
 
 -- --------------------------------------------------------
 
@@ -115,13 +116,13 @@ CREATE TABLE IF NOT EXISTS `user_profile` (
 -- Indexes for table `forgot_password`
 --
 ALTER TABLE `forgot_password`
- ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `UNIQ_2AB9B5667002C064` (`fp_key`), ADD UNIQUE KEY `UNIQ_2AB9B566448D8A20` (`id_login`);
+ ADD PRIMARY KEY (`id`), ADD UNIQUE KEY `UNIQ_2AB9B5667002C064` (`fp_key`), ADD KEY `IDX_2AB9B566448D8A20` (`id_login`);
 
 --
 -- Indexes for table `users_login`
 --
 ALTER TABLE `users_login`
- ADD PRIMARY KEY (`id`), ADD KEY `IDX_4D7F6F59DC499668` (`id_role`), ADD KEY `username_index` (`username`), ADD KEY `email_index` (`email`), ADD KEY `salt_index` (`salt`), ADD KEY `password_index` (`password`), ADD KEY `id_company_index` (`id_company`);
+ ADD PRIMARY KEY (`id`), ADD KEY `IDX_4D7F6F59DC499668` (`id_role`), ADD KEY `username_index` (`username`), ADD KEY `email_index` (`email`), ADD KEY `salt_index` (`salt`), ADD KEY `password_index` (`password`), ADD KEY `activte_key_index` (`activte_key`);
 
 --
 -- Indexes for table `users_role`
@@ -153,7 +154,7 @@ MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
 -- AUTO_INCREMENT for table `users_role`
 --
 ALTER TABLE `users_role`
-MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=2;
+MODIFY `id` bigint(20) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=3;
 --
 -- AUTO_INCREMENT for table `user_profile`
 --
